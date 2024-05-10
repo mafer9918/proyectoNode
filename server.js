@@ -4,6 +4,7 @@ const connectDB = require("./db/db");
 const userRoutes = require("./routes/userRoutes");
 const authRoutes = require("./routes/authRoutes");
 const sessionRoutes = require("./routes/sessionRoutes");
+const cacheRoutes = require("./routes/cacheRoutes");
 const Arena = require("bull-arena");
 const Bull = require("bull");
 const {queues} = require("./workers/queues.js");
@@ -27,6 +28,7 @@ const arenaConfig = Arena(
 app.use("/api/users", userRoutes);
 app.use("/api/auth", authRoutes);
 app.use("/api/session", sessionRoutes);
+app.use("/api/cache", cacheRoutes);
 app.use("/api", arenaConfig);
 
 connectDB();

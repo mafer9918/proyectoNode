@@ -28,8 +28,25 @@ userSchema.pre("save", function (next) {
   bcryptService
     .hashPassword(this.password)
     .then((hashedPassword) => {
-      console.log(hashedPassword);
       this.password = hashedPassword;
+      next();
+    })
+    .catch((error) => {
+      console.error(error);
+      next(error);
+    });
+});
+
+userSchema.pre("findOneAndUpdate", function (next) {
+  const updateFields = this.getUpdate();
+  if (!updateFields.password) {
+    return next();
+  }
+  const newPassword = updateFields.password;
+  bcryptService
+    .hashPassword(newPassword)
+    .then((hashedPassword) => {
+      this.getUpdate().password = hashedPassword;
       next();
     })
     .catch((error) => {
